@@ -1,17 +1,20 @@
-package sort;
+package sort.generic;
 
-public class MergeSort {
+public class GenMergeSort {
 	/** The method for sorting the numbers */
-	public static void mergeSort(int[] list) {
+	public static <T extends Comparable<T>> void mergeSort(T[] list) {
 		if (list.length > 1) {
 			// Merge sort the first half
-			int[] firstHalf = new int[list.length / 2];
+			@SuppressWarnings("unchecked")
+			T[] firstHalf = (T[]) new Object[list.length / 2];
+
 			System.arraycopy(list, 0, firstHalf, 0, list.length / 2);
 			mergeSort(firstHalf);
 
 			// Merge sort the second half
 			int secondHalfLength = list.length - list.length / 2;
-			int[] secondHalf = new int[secondHalfLength];
+			@SuppressWarnings("unchecked")
+			T[] secondHalf = (T[]) new Object[secondHalfLength];
 			System.arraycopy(list, list.length / 2, secondHalf, 0, secondHalfLength);
 			mergeSort(secondHalf);
 
@@ -21,13 +24,13 @@ public class MergeSort {
 	}
 
 	/** Merge two sorted lists */
-	public static void merge(int[] list1, int[] list2, int[] temp) {
+	public static <T extends Comparable<T>> void merge(T[] list1, T[] list2, T[] temp) {
 		int current1 = 0; // Current index in list1
 		int current2 = 0; // Current index in list2
 		int current3 = 0; // Current index in temp
 
 		while (current1 < list1.length && current2 < list2.length) {
-			if (list1[current1] < list2[current2])
+			if (list1[current1].compareTo(list2[current2]) < 0)
 				temp[current3++] = list1[current1++];
 			else
 				temp[current3++] = list2[current2++];
@@ -40,5 +43,9 @@ public class MergeSort {
 			temp[current3++] = list2[current2++];
 	}
 
-	
 }
+
+// Unit test
+// Generic 
+// Recursion
+// OOP

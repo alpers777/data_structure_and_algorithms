@@ -1,4 +1,4 @@
-package sortGeneric;
+package sort.generic;
 
 public class GenBubbleSort {
 	public static <T extends Comparable<T>> void bubbleSort(T[] list) {

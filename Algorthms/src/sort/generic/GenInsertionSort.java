@@ -1,4 +1,4 @@
-package sortGeneric;
+package sort.generic;
 
 public class GenInsertionSort {
 	public static <T extends Comparable<T>> void insertionSort(T[] list) {

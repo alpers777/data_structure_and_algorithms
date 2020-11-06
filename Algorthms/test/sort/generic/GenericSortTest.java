@@ -1,10 +1,14 @@
-package sortGeneric;
+package sort.generic;
 
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import sort.generic.GenBubbleSort;
+import sort.generic.GenInsertionSort;
+import sort.generic.GenSelectionSort;
 
 public class GenericSortTest {
 

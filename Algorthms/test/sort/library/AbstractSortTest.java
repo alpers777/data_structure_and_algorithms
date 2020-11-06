@@ -1,10 +1,12 @@
-package sortLibrary;
+package sort.library;
 
 import static org.junit.Assert.assertArrayEquals;
 
 import java.util.Arrays;
 
 import org.junit.Test;
+
+import sort.library.AbstractSort;
 
 public abstract class AbstractSortTest {
 

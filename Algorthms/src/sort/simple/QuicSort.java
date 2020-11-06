@@ -1,4 +1,4 @@
-package sort;
+package sort.simple;
 
 public class QuicSort {
 

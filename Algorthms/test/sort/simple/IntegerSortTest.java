@@ -1,9 +1,13 @@
-package sort;
+package sort.simple;
 
 import java.util.Arrays;
 
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
+
+import sort.simple.BubbleSort;
+import sort.simple.InsertionSort;
+import sort.simple.SelectionSort;
 
 public class IntegerSortTest {
 	

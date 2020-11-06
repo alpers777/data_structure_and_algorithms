@@ -1,15 +1,17 @@
-package sort;
+package sort.library;
 
-public class InsertionSort {
-	public static void insertionSort(int[] list) {
+public class InsertionSort<T extends Comparable<T>> extends AbstractSort<T> {
+
+	@Override
+	public void sort(T[] list) {
 		for (int i = 1; i < list.length; i++) {
 			/**
 			 * insert list[i] into a sorted sublist list[0..i-1] so that list[0..i] is
 			 * sorted.
 			 */
-			int currentElement = list[i];
+			T currentElement = list[i];
 			int k;
-			for (k = i - 1; k >= 0 && list[k] > currentElement; k--) {
+			for (k = i - 1; k >= 0 && list[k].compareTo(currentElement) > 0; k--) {
 				list[k + 1] = list[k];
 			}
 

@@ -1,7 +1,9 @@
-package sort;
+package sort.library;
 
-public class BubbleSort {
-	public static void bubbleSort(int[] list) {
+public class BubbleSort<T extends Comparable<T>> extends AbstractSort<T> {
+
+	@Override
+	public void sort(T[] list) {
 
 		boolean needNextPass = true;
 
@@ -9,9 +11,9 @@ public class BubbleSort {
 			// Array may be sorted and next pass not needed
 			needNextPass = false;
 			for (int i = 0; i < list.length - k; i++) {
-				if (list[i] > list[i + 1]) {
+				if (list[i].compareTo(list[i + 1]) > 0) {
 					// Swap list[i] with list[i + 1]
-					int temp = list[i];
+					T temp = list[i];
 					list[i] = list[i + 1];
 					list[i + 1] = temp;
 
@@ -20,5 +22,4 @@ public class BubbleSort {
 			}
 		}
 	}
-
 }

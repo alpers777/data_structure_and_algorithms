@@ -1,4 +1,7 @@
-package sortLibrary;
+package sort.library;
+
+import sort.library.AbstractSort;
+import sort.library.InsertionSort;
 
 public class InsertionSortTest extends AbstractSortTest {
 	

@@ -1,4 +1,7 @@
-package sortLibrary;
+package sort.library;
+
+import sort.library.AbstractSort;
+import sort.library.BubbleSort;
 
 public class BubbleSortTest extends AbstractSortTest {
 

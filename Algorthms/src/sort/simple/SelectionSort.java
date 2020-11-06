@@ -1,15 +1,15 @@
-package sortGeneric;
+package sort.simple;
 
-public class GenSelectionSort {
-
-	public static <T extends Comparable<T>> void selectionSort(T[] list) {
+public class SelectionSort {
+	
+	public static void selectionSort(int[] list) {
 		for (int i = 0; i < list.length - 1; i++) {
 			// Find the minimum in the list[i..list.length-1]
-			T currentMin = list[i];
+			int currentMin = list[i];
 			int currentMinIndex = i;
 
 			for (int j = i + 1; j < list.length; j++) {
-				if (currentMin.compareTo(list[j]) > 0) {
+				if (currentMin > list[j]) {
 					currentMin = list[j];
 					currentMinIndex = j;
 				}
@@ -22,5 +22,4 @@ public class GenSelectionSort {
 			}
 		}
 	}
-
 }
