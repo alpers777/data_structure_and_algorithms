@@ -35,21 +35,14 @@ public class ArrayList {
 	}
 
 	// Add to last -> O(1 + 1) -> O(1)
-	public void addLast(int e) {
+	public void addLast(int element) {
 		enlargeIfNecessery();
-		array[size++] = e;
+		array[size++] = element;
 	}
 
 	// O(n)
-	public void addFirst(int e) {
-		enlargeIfNecessery();
-
-		for (int i = size; i > 0; i--) {
-			array[i] = array[i - 1];
-		}
-
-		array[0] = e;
-		size++;
+	public void addFirst(int element) {
+		add(0, element);
 	}
 
 	private void enlargeIfNecessery() {
@@ -72,22 +65,24 @@ public class ArrayList {
 
 	// O(n)
 	public boolean contains(int e) {
-		for (int i = 0; i < size; i++) {
-			if (e == array[i]) {
-				return true;
-			}
-		}
-		return false;
+		return indexOf(e) != -1;
 	}
 
+	// O(1)
 	public int removeLast() {
-
-		return 0;
+		return removeIndex(size - 1);
 	}
 
+	// O(n)
+	public int removeFirst() {
+		return removeIndex(0);
+	}
+
+	// O(n)
 	public int removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
+
 		int data = array[index];
 
 		for (int i = index; i < size - 1; i++) {
@@ -96,38 +91,75 @@ public class ArrayList {
 
 		size--;
 
+		shrinkIfNecessery();
+
 		return data;
 	}
 
-	public int removeElement(int e) {
-		// TODO Auto-generated method stub
-		return 0;
+	// O(n + n) -> O(n)
+	public boolean removeElement(int e) {
+		int index = indexOf(e);
+
+		if (index != -1) {
+			removeIndex(index);
+		}
+
+		return false;
 	}
 
+	// O(n)
+	private void shrinkIfNecessery() {
+		if (size < array.length / 3) {
+			// O(n)
+			int[] newArray = new int[array.length / 2];
+			System.arraycopy(array, 0, newArray, 0, newArray.length);
+			array = newArray;
+		}
+	}
+
+	// O(1)
 	public int set(int index, int element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
+		
+		int data = array[index];
+		array[index] = element;
 
-		// TODO Auto-generated method stub
-		return 0;
+		return data;
 	}
 
+	// O(n)
 	public void add(int index, int element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		// TODO Auto-generated method stub
+		enlargeIfNecessery();
 
+		for (int i = size; i > index; i--) {
+			array[i] = array[i - 1];
+		}
+
+		array[index] = element;
+		size++;
 	}
 
+	// O(n)
 	public int indexOf(int e) {
-		// TODO Auto-generated method stub
-		return 0;
+		for (int i = 0; i < size; i++) {
+			if (e == array[i]) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public int lastIndexOf(int e) {
-		// TODO Auto-generated method stub
-		return 0;
+		for (int i = size - 1; i >= 0; i--) {
+			if (e == array[i]) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 }

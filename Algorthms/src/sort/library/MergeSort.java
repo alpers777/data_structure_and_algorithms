@@ -7,7 +7,7 @@ public class MergeSort<T extends Comparable<T>> extends AbstractSort<T> {
 		if (list.length > 1) {
 			// Merge sort the first half
 			@SuppressWarnings("unchecked")
-			T[] firstHalf = (T[]) new Object[list.length / 2];
+			T[] firstHalf = (T[]) new Comparable[list.length / 2];
 
 			System.arraycopy(list, 0, firstHalf, 0, list.length / 2);
 			sort(firstHalf);
@@ -15,7 +15,7 @@ public class MergeSort<T extends Comparable<T>> extends AbstractSort<T> {
 			// Merge sort the second half
 			int secondHalfLength = list.length - list.length / 2;
 			@SuppressWarnings("unchecked")
-			T[] secondHalf = (T[]) new Object[secondHalfLength];
+			T[] secondHalf = (T[]) new Comparable[secondHalfLength];
 			System.arraycopy(list, list.length / 2, secondHalf, 0, secondHalfLength);
 			sort(secondHalf);
 
