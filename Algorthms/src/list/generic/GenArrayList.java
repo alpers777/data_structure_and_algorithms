@@ -1,21 +1,21 @@
-package list.simple;
+package list.generic;
 
-public class ArrayList {
+public class GenArrayList<E> {
 
 	private static final int INITIAL_CAPACITY = 16;
 
-	private int[] array;
+	private Object[] array;
 
 	private int size;
 
 	// O(1)
-	public ArrayList() {
+	public GenArrayList() {
 		this(INITIAL_CAPACITY);
 	}
 
 	// O(1)
-	public ArrayList(int capacity) {
-		array = new int[capacity];
+	public GenArrayList(int size) {
+		array = new Object[size];
 	}
 
 	// O(1)
@@ -30,14 +30,15 @@ public class ArrayList {
 
 	// O(1)
 	public void clear() {
-		array = new int[INITIAL_CAPACITY];
+		array = new Object[INITIAL_CAPACITY];
 		size = 0;
 	}
 
 	// O(n)
 	private void enlargeIfNecessery() {
 		if (size == array.length - 1) {
-			int[] newArray = new int[array.length * 2];
+			// O(n)
+			Object[] newArray = new Object[array.length * 2];
 			System.arraycopy(array, 0, newArray, 0, array.length);
 			array = newArray;
 		}
@@ -48,14 +49,14 @@ public class ArrayList {
 	private void shrinkIfNecessery() {
 		if (size < array.length / 3) {
 			// O(n)
-			int[] newArray = new int[array.length / 2];
+			Object[] newArray = new Object[array.length / 2];
 			System.arraycopy(array, 0, newArray, 0, newArray.length);
 			array = newArray;
 		}
 	}
 
 	// O(n)
-	public void add(int index, int element) {
+	public void add(int index, E element) {
 		if (index > size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -70,17 +71,17 @@ public class ArrayList {
 	}
 
 	// Add to last -> O(1 + 1) -> O(1)
-	public void addLast(int element) {
+	public void addLast(E element) {
 		add(size, element);
 	}
 
 	// O(n)
-	public void addFirst(int element) {
+	public void addFirst(E element) {
 		add(0, element);
 	}
 
 	// O(n)
-	public int indexOf(int element) {
+	public int indexOf(E element) {
 		for (int i = 0; i < size; i++) {
 			if (element == array[i]) {
 				return i;
@@ -89,7 +90,7 @@ public class ArrayList {
 		return -1;
 	}
 
-	public int lastIndexOf(int element) {
+	public int lastIndexOf(E element) {
 		for (int i = size - 1; i >= 0; i--) {
 			if (element == array[i]) {
 				return i;
@@ -99,24 +100,26 @@ public class ArrayList {
 	}
 
 	// O(n)
-	public boolean contains(int element) {
+	public boolean contains(E element) {
 		return indexOf(element) != -1;
 	}
 
 	// O(1)
-	public int get(int index) {
+	@SuppressWarnings("unchecked")
+	public E get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		return array[index];
+		return (E) array[index];
 	}
 
 	// O(n)
-	public int removeIndex(int index) {
+	@SuppressWarnings("unchecked")
+	public E removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		int data = array[index];
+		E data = (E) array[index];
 
 		for (int i = index; i < size - 1; i++) {
 			array[i] = array[i + 1];
@@ -130,32 +133,34 @@ public class ArrayList {
 	}
 
 	// O(1)
-	public int removeLast() {
+	public E removeLast() {
 		return removeIndex(size - 1);
 	}
 
 	// O(n)
-	public int removeFirst() {
+	public E removeFirst() {
 		return removeIndex(0);
 	}
 
 	// O(n + n) -> O(n)
-	public boolean removeElement(int element) {
+	public boolean removeElement(E element) {
 		int index = indexOf(element);
 
 		if (index != -1) {
 			removeIndex(index);
+			return true;
 		}
 
 		return false;
 	}
 
 	// O(1)
-	public int set(int index, int element) {
+	@SuppressWarnings("unchecked")
+	public E set(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		int data = array[index];
+		E data = (E) array[index];
 		array[index] = element;
 
 		return data;
