@@ -3,7 +3,7 @@ package list.simple;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedList implements Iterable<Integer> {
+public class LinkedList implements Iterable<Integer> { 
 
 	private Node head;
 
