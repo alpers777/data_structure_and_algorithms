@@ -1,11 +1,10 @@
 package list.library;
 
-import org.junit.jupiter.api.BeforeEach;
-import list.library.ArrayList;
+import org.junit.Before;
 
 public class ArrayListTest extends ListTest {
 
-	@BeforeEach
+	@Before
 	public void init() {
 		listInteger = new ArrayList<>();
 		listString = new ArrayList<>();

@@ -1,11 +1,10 @@
 package list.library;
 
-import org.junit.jupiter.api.BeforeEach;
-import list.library.LinkedList;
+import org.junit.Before;
 
 public class LinkedListTest extends ListTest {
 
-	@BeforeEach
+	@Before
 	public void init() {
 		listInteger = new LinkedList<>();
 		listString = new LinkedList<>();
