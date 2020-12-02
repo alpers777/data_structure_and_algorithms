@@ -1,9 +1,9 @@
-package list.simple;
+package list.library;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedList implements Iterable<Integer> {
+public class DoubleLinkedList<E> extends List<E> {
 
 	private Node head;
 
@@ -28,54 +28,73 @@ public class LinkedList implements Iterable<Integer> {
 	}
 
 	// Add to last O(1)
-	public void addLast(int element) {
+	public void addLast(E element) {
 		if (isEmpty()) {
 			head = tail = new Node(element);
 		} else {
 			Node newElement = new Node(element);
 			tail.next = newElement;
+			newElement.prev = tail;
 			tail = newElement;
 		}
 		size++;
 	}
 
 	// O(1)
-	public void addFirst(int element) {
+	public void addFirst(E element) {
 		if (isEmpty()) {
 			head = tail = new Node(element);
 		} else {
 			Node newElement = new Node(element);
 			newElement.next = head;
+			head.prev = newElement;
 			head = newElement;
 		}
 		size++;
 	}
 
 	// O(n)
-	public int get(int index) {
+	public E get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		if (size - 1 == index)
-			return tail.data;
-
-		Node current = head;
-
-		while (index > 0) {
-			index--;
-			current = current.next;
-		}
-
-		return current.data;
+		return getNode(index).data;
 	}
 
 	// O(n)
-	public boolean contains(int element) {
+	private Node getNode(int index) {
+		if (size - 1 == index)
+			return tail;
+
+		Node current;
+		if (index <= size / 2) {
+			current = head;
+
+			while (index > 0) {
+				index--;
+				current = current.next;
+			}
+		} else {
+			current = tail;
+			index = size - index - 1;
+
+			while (index > 0) {
+				index--;
+				current = current.prev;
+			}
+
+		}
+
+		return current;
+	}
+
+	// O(n)
+	public boolean contains(E element) {
 		return indexOf(element) != -1;
 	}
 
 	// O(n)
-	public int removeLast() {
+	public E removeLast() {
 		if (isEmpty())
 			throw new NoSuchElementException();
 
@@ -83,14 +102,14 @@ public class LinkedList implements Iterable<Integer> {
 	}
 
 	// O(1)
-	public int removeFirst() {
+	public E removeFirst() {
 		if (isEmpty())
 			throw new NoSuchElementException();
 		return removeIndex(0);
 	}
 
 	// O(n + n) -> O(n)
-	public boolean removeElement(int element) {
+	public boolean removeElement(E element) {
 		int index = indexOf(element);
 
 		if (index != -1) {
@@ -102,16 +121,18 @@ public class LinkedList implements Iterable<Integer> {
 	}
 
 	// O(n)
-	public int removeIndex(int index) {
+	public E removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
 		if (index == 0) {
-			int first = head.data;
+			E first = head.data;
 			head = head.next;
 
 			if (head == null) {
 				tail = null;
+			} else {
+				head.prev = null;
 			}
 
 			size--;
@@ -119,35 +140,31 @@ public class LinkedList implements Iterable<Integer> {
 			return first;
 		}
 
-		Node previous = head;
-		for (int i = 0; i < index - 1; i++) {
-			previous = previous.next;
-		}
+		Node current = getNode(index);
+		Node previous = current.prev;
+		Node next = current.next;
 
-		Node current = previous.next;
-		Node curentNext = current.next;
+		previous.next = next;
 
-		previous.next = curentNext;
-
-		if (index == size - 1) // (curentNext == null)
+		if (index == size - 1) { // (curentNext == null)
 			tail = previous;
+		} else {
+			next.prev = previous;
+		}
 
 		size--;
 
 		return current.data;
 	}
 
-	// O(1)
-	public int set(int index, int element) {
+	// O(n)
+	public E set(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		Node current = head;
-		for (int i = 0; i < index; i++) {
-			current = current.next;
-		}
+		Node current = getNode(index);
 
-		int data = current.data;
+		E data = current.data;
 
 		current.data = element;
 
@@ -155,7 +172,7 @@ public class LinkedList implements Iterable<Integer> {
 	}
 
 	// O(n)
-	public void add(int index, int element) {
+	public void add(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -164,23 +181,22 @@ public class LinkedList implements Iterable<Integer> {
 			return;
 		}
 
-		Node previous = head;
-		for (int i = 0; i < index - 1; i++) {
-			previous = previous.next;
-		}
-
-		Node current = previous.next;
+		Node current = getNode(index);
+		Node previous = current.prev;
 
 		Node newNode = new Node(element);
 
 		previous.next = newNode;
 		newNode.next = current;
 
+		current.prev = newNode;
+		newNode.prev = previous;
+
 		size++;
 	}
 
 	// O(n)
-	public int indexOf(int element) {
+	public int indexOf(E element) {
 		int index = 0;
 		Node current = head;
 		while (current != null) {
@@ -195,7 +211,7 @@ public class LinkedList implements Iterable<Integer> {
 	}
 
 	// O(n)
-	public int lastIndexOf(int element) {
+	public int lastIndexOf(E element) {
 		int index = 0;
 		int lastIndex = -1;
 		Node current = head;
@@ -210,22 +226,43 @@ public class LinkedList implements Iterable<Integer> {
 		return lastIndex;
 	}
 
-	private class Node {
-		int data;
-		Node next;
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
 
-		public Node(int data) {
+		sb.append("[");
+		if (size == 0) {
+			sb.append("]");
+		} else {
+			for (E e : this) {
+				sb.append(e);
+				sb.append(", ");
+			}
+			sb.delete(sb.length() - 2, sb.length());
+
+			sb.append("]");
+		}
+
+		return sb.toString();
+	}
+
+	private class Node {
+		E data;
+		Node next;
+		Node prev;
+
+		public Node(E data) {
 			this.data = data;
 		}
 	}
 
 	@Override
-	public Iterator<Integer> iterator() {
+	public Iterator<E> iterator() {
 
-		return new LinkedListIterator();
+		return new DoubleLinkedListIterator();
 	}
 
-	private class LinkedListIterator implements Iterator<Integer> {
+	private class DoubleLinkedListIterator implements Iterator<E> {
 
 		Node current = head;
 
@@ -235,11 +272,11 @@ public class LinkedList implements Iterable<Integer> {
 		}
 
 		@Override
-		public Integer next() {
+		public E next() {
 			if (hasNext() == false)
 				throw new NoSuchElementException();
-			
-			int data = current.data;
+
+			E data = current.data;
 
 			current = current.next;
 

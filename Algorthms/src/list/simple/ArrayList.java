@@ -1,6 +1,9 @@
 package list.simple;
 
-public class ArrayList {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class ArrayList implements Iterable<Integer>{
 
 	private static final int INITIAL_CAPACITY = 16;
 
@@ -159,6 +162,32 @@ public class ArrayList {
 		array[index] = element;
 
 		return data;
+	}
+
+	@Override
+	public Iterator<Integer> iterator() {
+		
+		return new ArrayListIterator();
+	}
+	
+	private class ArrayListIterator implements Iterator<Integer> {
+		
+		private int currentIndex = 0;
+		
+		@Override
+		public boolean hasNext() {
+			return currentIndex < size;
+		}
+
+		@Override
+		public Integer next() {
+
+			if (hasNext() == false)
+				throw new NoSuchElementException();
+			
+			return array[currentIndex++];
+		}
+		
 	}
 
 }

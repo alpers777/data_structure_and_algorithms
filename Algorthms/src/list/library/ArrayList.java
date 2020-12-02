@@ -1,44 +1,38 @@
-package list.generic;
+package list.library;
 
-public class GenArrayList<E> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class ArrayList<E> extends List<E> {
 
 	private static final int INITIAL_CAPACITY = 16;
 
-	private Object[] array;
-
-	private int size;
+	private E[] array;
 
 	// O(1)
-	public GenArrayList() {
+	public ArrayList() {
 		this(INITIAL_CAPACITY);
 	}
 
 	// O(1)
-	public GenArrayList(int size) {
-		array = new Object[size];
+	@SuppressWarnings("unchecked")
+	public ArrayList(int size) {
+		array = (E[]) new Object[size];
 	}
 
 	// O(1)
-	public int size() {
-		return size;
-	}
-
-	// O(1)
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
-	// O(1)
+	@SuppressWarnings("unchecked")
 	public void clear() {
-		array = new Object[INITIAL_CAPACITY];
-		size = 0;
+		super.clear();
+		array = (E[]) new Object[INITIAL_CAPACITY];
 	}
 
 	// O(n)
 	private void enlargeIfNecessery() {
 		if (size == array.length - 1) {
 			// O(n)
-			Object[] newArray = new Object[array.length * 2];
+			@SuppressWarnings("unchecked")
+			E[] newArray = (E[]) new Object[array.length * 2];
 			System.arraycopy(array, 0, newArray, 0, array.length);
 			array = newArray;
 		}
@@ -49,7 +43,8 @@ public class GenArrayList<E> {
 	private void shrinkIfNecessery() {
 		if (size < array.length / 3) {
 			// O(n)
-			Object[] newArray = new Object[array.length / 2];
+			@SuppressWarnings("unchecked")
+			E[] newArray = (E[]) new Object[array.length / 2];
 			System.arraycopy(array, 0, newArray, 0, newArray.length);
 			array = newArray;
 		}
@@ -71,6 +66,7 @@ public class GenArrayList<E> {
 	}
 
 	// Add to last -> O(1 + 1) -> O(1)
+	@Override
 	public void addLast(E element) {
 		add(size, element);
 	}
@@ -83,16 +79,17 @@ public class GenArrayList<E> {
 	// O(n)
 	public int indexOf(E element) {
 		for (int i = 0; i < size; i++) {
-			if (element == array[i]) {
+			if (element.equals(array[i])) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
+	// O(n)
 	public int lastIndexOf(E element) {
 		for (int i = size - 1; i >= 0; i--) {
-			if (element == array[i]) {
+			if (element.equals(array[i])) {
 				return i;
 			}
 		}
@@ -105,21 +102,19 @@ public class GenArrayList<E> {
 	}
 
 	// O(1)
-	@SuppressWarnings("unchecked")
 	public E get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		return (E) array[index];
+		return array[index];
 	}
 
 	// O(n)
-	@SuppressWarnings("unchecked")
 	public E removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		E data = (E) array[index];
+		E data = array[index];
 
 		for (int i = index; i < size - 1; i++) {
 			array[i] = array[i + 1];
@@ -155,15 +150,59 @@ public class GenArrayList<E> {
 	}
 
 	// O(1)
-	@SuppressWarnings("unchecked")
 	public E set(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		E data = (E) array[index];
+		E data = array[index];
 		array[index] = element;
 
 		return data;
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("[");
+		if (size == 0) {
+			sb.append("]");
+		} else {
+			for (E e : this) {
+				sb.append(e);
+				sb.append(", ");
+			}
+			sb.delete(sb.length() - 2, sb.length());
+
+			sb.append("]");
+		}
+
+		return sb.toString();
+	}
+
+	@Override
+	public Iterator<E> iterator() {
+
+		return new ArrayListIterator();
+	}
+
+	private class ArrayListIterator implements Iterator<E> {
+
+		private int currentIndex = 0;
+
+		@Override
+		public boolean hasNext() {
+			return currentIndex < size;
+		}
+
+		@Override
+		public E next() {
+			if (hasNext()) {
+				;
+				return array[currentIndex++];
+			} else {
+				throw new NoSuchElementException();
+			}
+		}
+
+	}
 }

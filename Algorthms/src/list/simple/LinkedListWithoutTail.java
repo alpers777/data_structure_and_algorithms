@@ -1,13 +1,10 @@
 package list.simple;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedList implements Iterable<Integer> {
+public class LinkedListWithoutTail {
 
 	private Node head;
-
-	private Node tail;
 
 	private int size;
 
@@ -23,18 +20,22 @@ public class LinkedList implements Iterable<Integer> {
 
 	// O(1)
 	public void clear() {
-		head = tail = null;
+		head = null;
 		size = 0;
 	}
 
-	// Add to last O(1)
+	// Add to last O(n)
 	public void addLast(int element) {
 		if (isEmpty()) {
-			head = tail = new Node(element);
+			head = new Node(element);
 		} else {
-			Node newElement = new Node(element);
-			tail.next = newElement;
-			tail = newElement;
+			Node newNode = new Node(element);
+			
+			Node current = head;
+			for (int i = 0; i < size - 1; i++) {
+				current = current.next;
+			}
+			current.next = newNode;
 		}
 		size++;
 	}
@@ -42,7 +43,7 @@ public class LinkedList implements Iterable<Integer> {
 	// O(1)
 	public void addFirst(int element) {
 		if (isEmpty()) {
-			head = tail = new Node(element);
+			head = new Node(element);
 		} else {
 			Node newElement = new Node(element);
 			newElement.next = head;
@@ -55,9 +56,6 @@ public class LinkedList implements Iterable<Integer> {
 	public int get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
-
-		if (size - 1 == index)
-			return tail.data;
 
 		Node current = head;
 
@@ -73,12 +71,13 @@ public class LinkedList implements Iterable<Integer> {
 	public boolean contains(int element) {
 		return indexOf(element) != -1;
 	}
+	
 
 	// O(n)
 	public int removeLast() {
 		if (isEmpty())
 			throw new NoSuchElementException();
-
+		
 		return removeIndex(size - 1);
 	}
 
@@ -105,50 +104,43 @@ public class LinkedList implements Iterable<Integer> {
 	public int removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
-
+		
 		if (index == 0) {
 			int first = head.data;
 			head = head.next;
 
-			if (head == null) {
-				tail = null;
-			}
-
 			size--;
 
 			return first;
-		}
-
+		} 
+		
 		Node previous = head;
 		for (int i = 0; i < index - 1; i++) {
 			previous = previous.next;
 		}
-
+		
 		Node current = previous.next;
 		Node curentNext = current.next;
-
+		
 		previous.next = curentNext;
-
-		if (index == size - 1) // (curentNext == null)
-			tail = previous;
-
+		
 		size--;
-
+		
 		return current.data;
 	}
-
+	
 	// O(1)
 	public int set(int index, int element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
-
+		
 		Node current = head;
 		for (int i = 0; i < index; i++) {
 			current = current.next;
 		}
-
+		
 		int data = current.data;
-
+		
 		current.data = element;
 
 		return data;
@@ -158,25 +150,25 @@ public class LinkedList implements Iterable<Integer> {
 	public void add(int index, int element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
-
+		
 		if (index == 0) {
 			addFirst(element);
 			return;
 		}
-
+		
 		Node previous = head;
 		for (int i = 0; i < index - 1; i++) {
 			previous = previous.next;
 		}
-
+		
 		Node current = previous.next;
-
+		
 		Node newNode = new Node(element);
-
+		
 		previous.next = newNode;
 		newNode.next = current;
-
-		size++;
+		
+		size++;	
 	}
 
 	// O(n)
@@ -213,39 +205,10 @@ public class LinkedList implements Iterable<Integer> {
 	private class Node {
 		int data;
 		Node next;
-
+		
 		public Node(int data) {
 			this.data = data;
 		}
-	}
-
-	@Override
-	public Iterator<Integer> iterator() {
-
-		return new LinkedListIterator();
-	}
-
-	private class LinkedListIterator implements Iterator<Integer> {
-
-		Node current = head;
-
-		@Override
-		public boolean hasNext() {
-			return current != null;
-		}
-
-		@Override
-		public Integer next() {
-			if (hasNext() == false)
-				throw new NoSuchElementException();
-			
-			int data = current.data;
-
-			current = current.next;
-
-			return data;
-		}
-
 	}
 
 }
