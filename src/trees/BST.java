@@ -1,6 +1,10 @@
 package trees;
 
 import java.util.Iterator;
+import java.util.function.Consumer;
+
+import list.library.ArrayList;
+import list.library.List;
 
 
 
@@ -91,10 +95,12 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 
 	}
 
+	// O(logn)
 	public void insertRecursive2(E element) {
 		root = insertRecursiveHeper2(element, root);
 	}
 
+	// O(logn)
 	private TreeNode<E> insertRecursiveHeper2(E element, TreeNode<E> parrent) {
 		if (parrent == null) {
 			size++;
@@ -221,18 +227,46 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	}
 
 	/** Inorder traversal from the root */
-	public void inorder() {
-		// TODO Auto-generated method stub
+	public void inorder(Consumer<E> consumer) {
+		inorderHelper(root, consumer);
+	}
+
+	private void inorderHelper(TreeNode<E> node, Consumer<E> consumer) {
+		if (node == null)
+			return;
+		
+		inorderHelper(node.left, consumer);
+		consumer.accept(node.element);
+		inorderHelper(node.right, consumer);
+		
 	}
 
 	/** Postorder traversal from the root */
-	public void postorder() {
-		// TODO Auto-generated method stub
+	public void postorder(Consumer<E> consumer) {
+		postorderHelper(root, consumer);
+	}
+
+	private void postorderHelper(TreeNode<E> node, Consumer<E> consumer) {
+		if (node == null)
+			return;
+		
+		inorderHelper(node.left, consumer);
+		inorderHelper(node.right, consumer);
+		consumer.accept(node.element);
 	}
 
 	/** Preorder traversal from the root */
-	public void preorder() {
-		// TODO Auto-generated method stub
+	public void preorder(Consumer<E> consumer) {
+		preorderHelper(root, consumer);
+	}
+
+	private void preorderHelper(TreeNode<E> node, Consumer<E> consumer) {
+		if (node == null)
+			return;
+
+		consumer.accept(node.element);
+		inorderHelper(node.left, consumer);
+		inorderHelper(node.right, consumer);
 	}
 
 	private static class TreeNode<E> {
@@ -247,8 +281,37 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new InorderIterrator();
+	}
+	
+	class InorderIterrator implements Iterator<E> {
+		
+		private List<E> list = new ArrayList<E>();
+		private int cuırrenIndex;
+		
+		public InorderIterrator() {
+			inorder(root);
+		}
+
+		private void inorder(TreeNode<E> node) {
+			if (node == null)
+				return;
+			
+			inorder(node.left);
+			list.addLast(node.element);
+			inorder(node.right);
+		}
+
+		@Override
+		public boolean hasNext() {
+			return cuırrenIndex < list.size();
+		}
+
+		@Override
+		public E next() {
+			return list.get(cuırrenIndex++);
+		}
+		
 	}
 
 }
