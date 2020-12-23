@@ -6,8 +6,6 @@ import java.util.function.Consumer;
 import list.library.ArrayList;
 import list.library.List;
 
-
-
 public class BST<E extends Comparable<E>> implements Iterable<E> {
 
 	private TreeNode<E> root;
@@ -148,9 +146,9 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	}
 
 	public boolean delete(E element) {
-		if (isEmpty()) 
+		if (isEmpty())
 			return false;
-		
+
 		TreeNode<E> parent = null;
 		TreeNode<E> current = root;
 
@@ -161,16 +159,18 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 			} else if (element.compareTo(current.element) < 0) {
 				parent = current;
 				current = current.left;
-			} else
+			} else {
 				delete(parent, current); // Equals
+				break;
+			}
 		}
-		
+
 		return false;
 
 	}
 
 	private void delete(TreeNode<E> parent, TreeNode<E> current) {
-		
+
 		// Case 1 left and right are null
 		if (current.left == null && current.right == null) {
 			if (current == root) { // or parent == null
@@ -181,7 +181,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 				parent.right = null;
 			}
 		}
-		// Case 2 lest is null right is not null
+		// Case 2 left is null right is not null
 		else if (current.left == null && current.right != null) {
 			if (current == root) { // or parent == null
 				root = current.right;
@@ -191,7 +191,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 				parent.right = current.right;
 			}
 		}
-		// Case 3 lest is not null right is null
+		// Case 3 left is not null right is null
 		else if (current.left != null && current.right == null) {
 			if (current == root) { // or parent == null
 				root = current.left;
@@ -201,7 +201,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 				parent.right = current.left;
 			}
 		}
-		// Case 4 lest is not null right is not null
+		// Case 4 left is not null right is not null
 		else { // (current.left != null && current.right != null) is true
 			TreeNode<E> parentOfRightMost = current;
 			TreeNode<E> rightMost = current.left;
@@ -221,9 +221,9 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 				// Special case: parentOfRightMost == current
 				parentOfRightMost.left = rightMost.left;
 		}
-		
+
 		size--;
-		
+
 	}
 
 	/** Inorder traversal from the root */
@@ -234,11 +234,11 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	private void inorderHelper(TreeNode<E> node, Consumer<E> consumer) {
 		if (node == null)
 			return;
-		
+
 		inorderHelper(node.left, consumer);
 		consumer.accept(node.element);
 		inorderHelper(node.right, consumer);
-		
+
 	}
 
 	/** Postorder traversal from the root */
@@ -249,7 +249,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	private void postorderHelper(TreeNode<E> node, Consumer<E> consumer) {
 		if (node == null)
 			return;
-		
+
 		inorderHelper(node.left, consumer);
 		inorderHelper(node.right, consumer);
 		consumer.accept(node.element);
@@ -283,12 +283,12 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	public Iterator<E> iterator() {
 		return new InorderIterrator();
 	}
-	
+
 	class InorderIterrator implements Iterator<E> {
-		
+
 		private List<E> list = new ArrayList<E>();
-		private int cuırrenIndex;
-		
+		private int currenIndex;
+
 		public InorderIterrator() {
 			inorder(root);
 		}
@@ -296,7 +296,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 		private void inorder(TreeNode<E> node) {
 			if (node == null)
 				return;
-			
+
 			inorder(node.left);
 			list.addLast(node.element);
 			inorder(node.right);
@@ -304,14 +304,14 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 
 		@Override
 		public boolean hasNext() {
-			return cuırrenIndex < list.size();
+			return currenIndex < list.size();
 		}
 
 		@Override
 		public E next() {
-			return list.get(cuırrenIndex++);
+			return list.get(currenIndex++);
 		}
-		
+
 	}
 
 }
