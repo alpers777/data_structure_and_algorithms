@@ -2,6 +2,8 @@ package list.library;
 
 import org.junit.Before;
 
+import collection.list.library.ArrayList;
+
 public class ArrayListTest extends ListTest {
 
 	@Before

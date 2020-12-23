@@ -1,8 +1,8 @@
-package list.simple;
+package collection.list.simple;
 
-public class StackUsingLinkedList {
+public class StackUsingArrayList {
 	
-	private LinkedList list = new LinkedList();
+	private ArrayList list = new ArrayList();
 
 	public void push(int element) {
 		list.addLast(element);

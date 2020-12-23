@@ -1,13 +1,15 @@
-package list.library;
+package collection.list.simple;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayList<E> extends List<E> {
+public class ArrayList implements Iterable<Integer>{
 
 	private static final int INITIAL_CAPACITY = 16;
 
-	private E[] array;
+	private int[] array;
+
+	private int size;
 
 	// O(1)
 	public ArrayList() {
@@ -15,24 +17,30 @@ public class ArrayList<E> extends List<E> {
 	}
 
 	// O(1)
-	@SuppressWarnings("unchecked")
-	public ArrayList(int size) {
-		array = (E[]) new Object[size];
+	public ArrayList(int capacity) {
+		array = new int[capacity];
 	}
 
 	// O(1)
-	@SuppressWarnings("unchecked")
+	public int size() {
+		return size;
+	}
+
+	// O(1)
+	public boolean isEmpty() {
+		return size == 0;
+	}
+
+	// O(1)
 	public void clear() {
-		super.clear();
-		array = (E[]) new Object[INITIAL_CAPACITY];
+		array = new int[INITIAL_CAPACITY];
+		size = 0;
 	}
 
 	// O(n)
 	private void enlargeIfNecessery() {
 		if (size == array.length - 1) {
-			// O(n)
-			@SuppressWarnings("unchecked")
-			E[] newArray = (E[]) new Object[array.length * 2];
+			int[] newArray = new int[array.length * 2];
 			System.arraycopy(array, 0, newArray, 0, array.length);
 			array = newArray;
 		}
@@ -43,15 +51,14 @@ public class ArrayList<E> extends List<E> {
 	private void shrinkIfNecessery() {
 		if (size < array.length / 3) {
 			// O(n)
-			@SuppressWarnings("unchecked")
-			E[] newArray = (E[]) new Object[array.length / 2];
+			int[] newArray = new int[array.length / 2];
 			System.arraycopy(array, 0, newArray, 0, newArray.length);
 			array = newArray;
 		}
 	}
 
 	// O(n)
-	public void add(int index, E element) {
+	public void add(int index, int element) {
 		if (index > size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -66,30 +73,28 @@ public class ArrayList<E> extends List<E> {
 	}
 
 	// Add to last -> O(1 + 1) -> O(1)
-	@Override
-	public void addLast(E element) {
+	public void addLast(int element) {
 		add(size, element);
 	}
 
 	// O(n)
-	public void addFirst(E element) {
+	public void addFirst(int element) {
 		add(0, element);
 	}
 
 	// O(n)
-	public int indexOf(E element) {
+	public int indexOf(int element) {
 		for (int i = 0; i < size; i++) {
-			if (element.equals(array[i])) {
+			if (element == array[i]) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	// O(n)
-	public int lastIndexOf(E element) {
+	public int lastIndexOf(int element) {
 		for (int i = size - 1; i >= 0; i--) {
-			if (element.equals(array[i])) {
+			if (element == array[i]) {
 				return i;
 			}
 		}
@@ -97,12 +102,12 @@ public class ArrayList<E> extends List<E> {
 	}
 
 	// O(n)
-	public boolean contains(E element) {
+	public boolean contains(int element) {
 		return indexOf(element) != -1;
 	}
 
 	// O(1)
-	public E get(int index) {
+	public int get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -110,11 +115,11 @@ public class ArrayList<E> extends List<E> {
 	}
 
 	// O(n)
-	public E removeIndex(int index) {
+	public int removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		E data = array[index];
+		int data = array[index];
 
 		for (int i = index; i < size - 1; i++) {
 			array[i] = array[i + 1];
@@ -128,81 +133,61 @@ public class ArrayList<E> extends List<E> {
 	}
 
 	// O(1)
-	public E removeLast() {
+	public int removeLast() {
 		return removeIndex(size - 1);
 	}
 
 	// O(n)
-	public E removeFirst() {
+	public int removeFirst() {
 		return removeIndex(0);
 	}
 
 	// O(n + n) -> O(n)
-	public boolean removeElement(E element) {
+	public boolean removeElement(int element) {
 		int index = indexOf(element);
 
 		if (index != -1) {
 			removeIndex(index);
-			return true;
 		}
 
 		return false;
 	}
 
 	// O(1)
-	public E set(int index, E element) {
+	public int set(int index, int element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		E data = array[index];
+		int data = array[index];
 		array[index] = element;
 
 		return data;
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("[");
-		if (size == 0) {
-			sb.append("]");
-		} else {
-			for (E e : this) {
-				sb.append(e);
-				sb.append(", ");
-			}
-			sb.delete(sb.length() - 2, sb.length());
-
-			sb.append("]");
-		}
-
-		return sb.toString();
-	}
-
 	@Override
-	public Iterator<E> iterator() {
-
+	public Iterator<Integer> iterator() {
+		
 		return new ArrayListIterator();
 	}
-
-	private class ArrayListIterator implements Iterator<E> {
-
+	
+	private class ArrayListIterator implements Iterator<Integer> {
+		
 		private int currentIndex = 0;
-
+		
 		@Override
 		public boolean hasNext() {
 			return currentIndex < size;
 		}
 
 		@Override
-		public E next() {
-			if (hasNext()) {
-				;
-				return array[currentIndex++];
-			} else {
-				throw new NoSuchElementException();
-			}
-		}
+		public Integer next() {
 
+			if (hasNext() == false)
+				throw new NoSuchElementException();
+			
+			return array[currentIndex++];
+		}
+		
 	}
+
 }

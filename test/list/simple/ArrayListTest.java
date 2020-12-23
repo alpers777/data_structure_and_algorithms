@@ -2,6 +2,8 @@ package list.simple;
 
 import org.junit.Test;
 
+import collection.list.simple.ArrayList;
+
 public class ArrayListTest {
 
 	@Test

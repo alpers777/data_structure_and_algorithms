@@ -1,6 +1,6 @@
-package list.simple;
+package collection.list.simple;
 
-public class QueueUsingArrayList {
+public class QueueUsingLinkedList {
 	
 	private ArrayList list = new ArrayList();
 

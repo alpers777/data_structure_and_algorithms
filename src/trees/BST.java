@@ -3,12 +3,12 @@ package trees;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
-import list.library.ArrayList;
-import list.library.List;
+import collection.list.library.ArrayList;
+import collection.list.library.List;
 
 public class BST<E extends Comparable<E>> implements Iterable<E> {
 
-	private TreeNode<E> root;
+	protected TreeNode<E> root;
 
 	protected int size;
 
@@ -30,9 +30,8 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 
 	// O(logn)
 	public boolean insert(E element) {
-
 		if (isEmpty()) {
-			root = new TreeNode<E>(element);
+			root = createNewNode(element);
 			size++;
 			return true;
 		}
@@ -52,9 +51,9 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 		}
 
 		if (element.compareTo(parrent.element) > 0)
-			parrent.right = new TreeNode<E>(element);
+			parrent.right = createNewNode(element);
 		else if (element.compareTo(parrent.element) < 0)
-			parrent.left = new TreeNode<E>(element);
+			parrent.left = createNewNode(element);
 
 		size++;
 
@@ -64,7 +63,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	// O(logn)
 	public boolean insertRecursive(E element) {
 		if (isEmpty()) {
-			root = new TreeNode<E>(element);
+			root = createNewNode(element);
 			size++;
 			return true;
 		}
@@ -76,14 +75,14 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	private boolean insertRecursiveHeper(E element, TreeNode<E> parrent) {
 		if (element.compareTo(parrent.element) > 0) {
 			if (parrent.right == null) {
-				parrent.right = new TreeNode<E>(element);
+				parrent.right = createNewNode(element);
 				size++;
 				return true;
 			} else
 				return insertRecursiveHeper(element, parrent.right);
 		} else if (element.compareTo(parrent.element) < 0) {
 			if (parrent.left == null) {
-				parrent.left = new TreeNode<E>(element);
+				parrent.left = createNewNode(element);
 				size++;
 				return true;
 			} else
@@ -102,7 +101,7 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 	private TreeNode<E> insertRecursiveHeper2(E element, TreeNode<E> parrent) {
 		if (parrent == null) {
 			size++;
-			return new TreeNode<E>(element);
+			return createNewNode(element);
 		}
 
 		if (element.compareTo(parrent.element) > 0) {
@@ -269,7 +268,11 @@ public class BST<E extends Comparable<E>> implements Iterable<E> {
 		inorderHelper(node.right, consumer);
 	}
 
-	private static class TreeNode<E> {
+	protected TreeNode<E> createNewNode(E e) {
+		return new TreeNode<>(e);
+	}
+
+	protected static class TreeNode<E> {
 		E element;
 		TreeNode<E> left;
 		TreeNode<E> right;

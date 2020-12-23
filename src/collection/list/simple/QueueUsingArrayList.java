@@ -1,19 +1,15 @@
-package list.simple;
+package collection.list.simple;
 
-public class StackUsingArrayList {
+public class QueueUsingArrayList {
 	
 	private ArrayList list = new ArrayList();
 
-	public void push(int element) {
+	public void enqueue(int element) {
 		list.addLast(element);
 	}
 
-	public int pop() {
-		return list.removeLast();
-	}
-
-	public int peek() {
-		return list.get(list.size() - 1);
+	public int dequeue() {
+		return list.removeFirst();
 	}
 	
 	public int size() {

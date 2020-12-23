@@ -1,4 +1,4 @@
-package list.simple;
+package collection.list.simple;
 
 public class CircularArrayList {
 	

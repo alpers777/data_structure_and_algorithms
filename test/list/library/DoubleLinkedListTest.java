@@ -1,6 +1,8 @@
 package list.library;
 
-import org.junit.Before;;
+import org.junit.Before;
+
+import collection.list.library.DoubleLinkedList;;
 
 public class DoubleLinkedListTest extends ListTest{
 	

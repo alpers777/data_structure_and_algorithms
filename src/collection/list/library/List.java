@@ -1,4 +1,4 @@
-package list.library;
+package collection.list.library;
 
 public abstract class List<T> implements Iterable<T> {
 

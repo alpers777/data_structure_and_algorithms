@@ -1,13 +1,10 @@
-package list.simple;
+package collection.list.library;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class DoubleLinkedList implements Iterable<Integer> {
-
+public class LinkedListWithoutTail<E> extends List<E> {
 	private Node head;
-
-	private Node tail;
 
 	private int size;
 
@@ -23,78 +20,60 @@ public class DoubleLinkedList implements Iterable<Integer> {
 
 	// O(1)
 	public void clear() {
-		head = tail = null;
+		head = null;
 		size = 0;
 	}
 
-	// Add to last O(1)
-	public void addLast(int element) {
+	// Add to last O(n)
+	public void addLast(E element) {
 		if (isEmpty()) {
-			head = tail = new Node(element);
+			head = new Node(element);
 		} else {
-			Node newElement = new Node(element);
-			tail.next = newElement;
-			newElement.prev = tail;
-			tail = newElement;
+			Node newNode = new Node(element);
+
+			Node current = head;
+			for (int i = 0; i < size - 1; i++) {
+				current = current.next;
+			}
+			current.next = newNode;
 		}
 		size++;
 	}
 
 	// O(1)
-	public void addFirst(int element) {
+	public void addFirst(E element) {
 		if (isEmpty()) {
-			head = tail = new Node(element);
+			head = new Node(element);
 		} else {
 			Node newElement = new Node(element);
 			newElement.next = head;
-			head.prev = newElement;
 			head = newElement;
 		}
 		size++;
 	}
 
 	// O(n)
-	public int get(int index) {
+	public E get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
-		
-		return getNode(index).data;
-	}
-	
-	// O(n)
-	private Node getNode(int index) {
-		if (size - 1 == index)
-			return tail;
-		
-		Node current;
-		if (index <= size / 2) {
-			current = head;
-	
-			while (index > 0) {
-				index--;
-				current = current.next;
-			}
-		} else {
-			current = tail;
-			index = size - index - 1;
-			
-			while (index > 0) {
-				index--;
-				current = current.prev;
-			}
-			
+
+		Node current = head;
+
+		while (index > 0) {
+			index--;
+			current = current.next;
 		}
-		
-		return current;
+
+		return current.data;
 	}
 
 	// O(n)
-	public boolean contains(int element) {
+	public boolean contains(E element) {
 		return indexOf(element) != -1;
 	}
 
 	// O(n)
-	public int removeLast() {
+	public E removeLast() {
 		if (isEmpty())
 			throw new NoSuchElementException();
 
@@ -102,14 +81,14 @@ public class DoubleLinkedList implements Iterable<Integer> {
 	}
 
 	// O(1)
-	public int removeFirst() {
+	public E removeFirst() {
 		if (isEmpty())
 			throw new NoSuchElementException();
 		return removeIndex(0);
 	}
 
 	// O(n + n) -> O(n)
-	public boolean removeElement(int element) {
+	public boolean removeElement(E element) {
 		int index = indexOf(element);
 
 		if (index != -1) {
@@ -121,51 +100,45 @@ public class DoubleLinkedList implements Iterable<Integer> {
 	}
 
 	// O(n)
-	public int removeIndex(int index) {
+	public E removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
 		if (index == 0) {
-			int first = head.data;
+			E first = head.data;
 			head = head.next;
-			
-
-			if (head == null) {
-				tail = null;
-			} else {
-				head.prev = null;
-			}
 
 			size--;
 
 			return first;
 		}
-		
-		Node current = getNode(index);
-		Node previous = current.prev;
-		Node next = current.next;
-		
-		previous.next = next;
-				
-		if (index == size - 1) { // (curentNext == null)
-			tail = previous;
-		} else {
-			next.prev = previous;
+
+		Node previous = head;
+		for (int i = 0; i < index - 1; i++) {
+			previous = previous.next;
 		}
+
+		Node current = previous.next;
+		Node curentNext = current.next;
+
+		previous.next = curentNext;
 
 		size--;
 
 		return current.data;
 	}
 
-	// O(n)
-	public int set(int index, int element) {
+	// O(1)
+	public E set(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
-		
-		Node current = getNode(index);
 
-		int data = current.data;
+		Node current = head;
+		for (int i = 0; i < index; i++) {
+			current = current.next;
+		}
+
+		E data = current.data;
 
 		current.data = element;
 
@@ -173,7 +146,7 @@ public class DoubleLinkedList implements Iterable<Integer> {
 	}
 
 	// O(n)
-	public void add(int index, int element) {
+	public void add(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -182,22 +155,23 @@ public class DoubleLinkedList implements Iterable<Integer> {
 			return;
 		}
 
-		Node current = getNode(index);
-		Node previous = current.prev;
-		
+		Node previous = head;
+		for (int i = 0; i < index - 1; i++) {
+			previous = previous.next;
+		}
+
+		Node current = previous.next;
+
 		Node newNode = new Node(element);
 
 		previous.next = newNode;
 		newNode.next = current;
-		
-		current.prev = newNode;
-		newNode.prev = previous;
 
 		size++;
 	}
 
 	// O(n)
-	public int indexOf(int element) {
+	public int indexOf(E element) {
 		int index = 0;
 		Node current = head;
 		while (current != null) {
@@ -212,7 +186,7 @@ public class DoubleLinkedList implements Iterable<Integer> {
 	}
 
 	// O(n)
-	public int lastIndexOf(int element) {
+	public int lastIndexOf(E element) {
 		int index = 0;
 		int lastIndex = -1;
 		Node current = head;
@@ -227,23 +201,41 @@ public class DoubleLinkedList implements Iterable<Integer> {
 		return lastIndex;
 	}
 
-	private class Node {
-		int data;
-		Node next;
-		Node prev;
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
 
-		public Node(int data) {
+		sb.append("[");
+		if (size == 0) {
+			sb.append("]");
+		} else {
+			for (E e : this) {
+				sb.append(e);
+				sb.append(", ");
+			}
+			sb.delete(sb.length() - 2, sb.length());
+
+			sb.append("]");
+		}
+
+		return sb.toString();
+	}
+
+	private class Node {
+		E data;
+		Node next;
+
+		public Node(E data) {
 			this.data = data;
 		}
 	}
 
 	@Override
-	public Iterator<Integer> iterator() {
-
-		return new DoubleLinkedListIterator();
+	public Iterator<E> iterator() {
+		return new LinkedListWithoutTailIterator();
 	}
 
-	private class DoubleLinkedListIterator implements Iterator<Integer> {
+	private class LinkedListWithoutTailIterator implements Iterator<E> {
 
 		Node current = head;
 
@@ -253,14 +245,13 @@ public class DoubleLinkedList implements Iterable<Integer> {
 		}
 
 		@Override
-		public Integer next() {
-			if (hasNext() == false)
+		public E next() {
+			if (!hasNext()) {
 				throw new NoSuchElementException();
-			
-			int data = current.data;
+			}
 
+			E data = current.data;
 			current = current.next;
-
 			return data;
 		}
 

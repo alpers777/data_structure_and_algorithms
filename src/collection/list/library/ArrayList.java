@@ -1,15 +1,13 @@
-package list.simple;
+package collection.list.library;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayList implements Iterable<Integer>{
+public class ArrayList<E> extends List<E> {
 
 	private static final int INITIAL_CAPACITY = 16;
 
-	private int[] array;
-
-	private int size;
+	private E[] array;
 
 	// O(1)
 	public ArrayList() {
@@ -17,30 +15,24 @@ public class ArrayList implements Iterable<Integer>{
 	}
 
 	// O(1)
-	public ArrayList(int capacity) {
-		array = new int[capacity];
+	@SuppressWarnings("unchecked")
+	public ArrayList(int size) {
+		array = (E[]) new Object[size];
 	}
 
 	// O(1)
-	public int size() {
-		return size;
-	}
-
-	// O(1)
-	public boolean isEmpty() {
-		return size == 0;
-	}
-
-	// O(1)
+	@SuppressWarnings("unchecked")
 	public void clear() {
-		array = new int[INITIAL_CAPACITY];
-		size = 0;
+		super.clear();
+		array = (E[]) new Object[INITIAL_CAPACITY];
 	}
 
 	// O(n)
 	private void enlargeIfNecessery() {
 		if (size == array.length - 1) {
-			int[] newArray = new int[array.length * 2];
+			// O(n)
+			@SuppressWarnings("unchecked")
+			E[] newArray = (E[]) new Object[array.length * 2];
 			System.arraycopy(array, 0, newArray, 0, array.length);
 			array = newArray;
 		}
@@ -51,14 +43,15 @@ public class ArrayList implements Iterable<Integer>{
 	private void shrinkIfNecessery() {
 		if (size < array.length / 3) {
 			// O(n)
-			int[] newArray = new int[array.length / 2];
+			@SuppressWarnings("unchecked")
+			E[] newArray = (E[]) new Object[array.length / 2];
 			System.arraycopy(array, 0, newArray, 0, newArray.length);
 			array = newArray;
 		}
 	}
 
 	// O(n)
-	public void add(int index, int element) {
+	public void add(int index, E element) {
 		if (index > size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -73,28 +66,20 @@ public class ArrayList implements Iterable<Integer>{
 	}
 
 	// Add to last -> O(1 + 1) -> O(1)
-	public void addLast(int element) {
+	@Override
+	public void addLast(E element) {
 		add(size, element);
 	}
 
 	// O(n)
-	public void addFirst(int element) {
+	public void addFirst(E element) {
 		add(0, element);
 	}
 
 	// O(n)
-	public int indexOf(int element) {
+	public int indexOf(E element) {
 		for (int i = 0; i < size; i++) {
-			if (element == array[i]) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public int lastIndexOf(int element) {
-		for (int i = size - 1; i >= 0; i--) {
-			if (element == array[i]) {
+			if (element.equals(array[i])) {
 				return i;
 			}
 		}
@@ -102,12 +87,22 @@ public class ArrayList implements Iterable<Integer>{
 	}
 
 	// O(n)
-	public boolean contains(int element) {
+	public int lastIndexOf(E element) {
+		for (int i = size - 1; i >= 0; i--) {
+			if (element.equals(array[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	// O(n)
+	public boolean contains(E element) {
 		return indexOf(element) != -1;
 	}
 
 	// O(1)
-	public int get(int index) {
+	public E get(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
@@ -115,11 +110,11 @@ public class ArrayList implements Iterable<Integer>{
 	}
 
 	// O(n)
-	public int removeIndex(int index) {
+	public E removeIndex(int index) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		int data = array[index];
+		E data = array[index];
 
 		for (int i = index; i < size - 1; i++) {
 			array[i] = array[i + 1];
@@ -133,61 +128,81 @@ public class ArrayList implements Iterable<Integer>{
 	}
 
 	// O(1)
-	public int removeLast() {
+	public E removeLast() {
 		return removeIndex(size - 1);
 	}
 
 	// O(n)
-	public int removeFirst() {
+	public E removeFirst() {
 		return removeIndex(0);
 	}
 
 	// O(n + n) -> O(n)
-	public boolean removeElement(int element) {
+	public boolean removeElement(E element) {
 		int index = indexOf(element);
 
 		if (index != -1) {
 			removeIndex(index);
+			return true;
 		}
 
 		return false;
 	}
 
 	// O(1)
-	public int set(int index, int element) {
+	public E set(int index, E element) {
 		if (index >= size || index < 0)
 			throw new ArrayIndexOutOfBoundsException(index);
 
-		int data = array[index];
+		E data = array[index];
 		array[index] = element;
 
 		return data;
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("[");
+		if (size == 0) {
+			sb.append("]");
+		} else {
+			for (E e : this) {
+				sb.append(e);
+				sb.append(", ");
+			}
+			sb.delete(sb.length() - 2, sb.length());
+
+			sb.append("]");
+		}
+
+		return sb.toString();
+	}
+
 	@Override
-	public Iterator<Integer> iterator() {
-		
+	public Iterator<E> iterator() {
+
 		return new ArrayListIterator();
 	}
-	
-	private class ArrayListIterator implements Iterator<Integer> {
-		
+
+	private class ArrayListIterator implements Iterator<E> {
+
 		private int currentIndex = 0;
-		
+
 		@Override
 		public boolean hasNext() {
 			return currentIndex < size;
 		}
 
 		@Override
-		public Integer next() {
-
-			if (hasNext() == false)
+		public E next() {
+			if (hasNext()) {
+				;
+				return array[currentIndex++];
+			} else {
 				throw new NoSuchElementException();
-			
-			return array[currentIndex++];
+			}
 		}
-		
-	}
 
+	}
 }
