@@ -1,17 +1,18 @@
-package collection.list.simple;
+package collection.list.library;
 
-public class QueueUsingLinkedList {
-	
-	private LinkedList list = new LinkedList();
 
-	public void enqueue(int element) {
+public class QueueUsingArrayList<E> {
+
+	private ArrayList<E> list = new ArrayList<E>();
+
+	public void enqueue(E element) {
 		list.addLast(element);
 	}
 
-	public int dequeue() {
+	public E dequeue() {
 		return list.removeFirst();
 	}
-	
+
 	public int size() {
 		return list.size();
 	}

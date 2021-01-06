@@ -1,47 +1,30 @@
 package collection.list.library;
 
-public abstract class List<T> implements Iterable<T> {
+import collection.AbstractCollection;
 
-	protected int size;
+public abstract class List<E> extends AbstractCollection<E> implements Iterable<E> {
 
-	// O(1)
-	public int size() {
-		return size;
-	}
+	public abstract void add(int index, E element);
 
-	// O(1)
-	public boolean isEmpty() {
-		return size == 0;
-	}
+	public abstract void addLast(E element);
 
-	// O(1)
-	public void clear() {
-		size = 0;
-	}
+	public abstract void addFirst(E element);
 
-	public abstract void add(int index, T element);
+	public abstract int indexOf(E element);
 
-	public abstract void addLast(T element);
+	public abstract int lastIndexOf(E element);
 
-	public abstract void addFirst(T element);
+	public abstract E get(int index);
 
-	public abstract int indexOf(T element);
+	public abstract E removeIndex(int index);
 
-	public abstract int lastIndexOf(T element);
+	public abstract E removeLast();
 
-	public abstract boolean contains(T element);
+	public abstract E removeFirst();
 
-	public abstract T get(int index);
+	public abstract boolean removeElement(E element);
 
-	public abstract T removeIndex(int index);
-
-	public abstract T removeLast();
-
-	public abstract T removeFirst();
-
-	public abstract boolean removeElement(T element);
-
-	public abstract T set(int index, T element);
+	public abstract E set(int index, E element);
 
 	public abstract String toString();
 
