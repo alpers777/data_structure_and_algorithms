@@ -16,8 +16,8 @@ public class ArrayList<E> extends List<E> {
 
 	// O(1)
 	@SuppressWarnings("unchecked")
-	public ArrayList(int size) {
-		array = (E[]) new Object[size];
+	public ArrayList(int capacity) {
+		array = (E[]) new Object[capacity];
 	}
 
 	// O(1)

@@ -1,24 +1,42 @@
 package collection.map;
 
-import collection.AbstractCollection;
+import collection.list.library.List;
 import collection.set.Set;
 
-public abstract class Map<K, V> extends AbstractCollection<K> implements Entry<K, V> {
+public abstract class Map<K, V>  {
 
-	public abstract boolean containsKey(Object key);
+	protected int size;
 
-	public abstract boolean containsValue(Object value);
+	// O(1)
+	public int size() {
+		return size;
+	}
 
-	public abstract Set<Entry<K,V>> entrySet();
+	// O(1)
+	public boolean isEmpty() {
+		return size == 0;
+	}
 
-	public abstract V get(Object key);
-
-	public abstract Set<K> keySet();
+	// O(1)
+	public void clear() {
+		size = 0;
+	}
+	
 
 	public abstract void put(K key, V value);
 
-	public abstract V remove(Object Key);
+	public abstract V remove(K Key);
 
-//	public abstract ? values();
-//	public abstract void putAll(Map<? extends K,? extends V> m);
+	public abstract boolean containsKey(K key);
+
+	public abstract boolean containsValue(V value);
+
+	public abstract V get(K key);
+
+	public abstract Set<K> keySet();
+	
+	public abstract List<V> values();
+	
+	public abstract Set<Entry<K,V>> entrySet();
+	
 }

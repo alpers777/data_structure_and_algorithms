@@ -3,11 +3,18 @@ package collection.list.library;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CircularArrayList<E> extends List<E> {
+import javax.management.RuntimeErrorException;
+
+import collection.AbstractCollection;
+
+public class CircularArrayList<E> extends AbstractCollection<E> {
 
 	private static final int INITIAL_CAPACITY = 16;
 
 	private E[] array;
+
+	private int head;
+	private int tail;
 
 	// O(1)
 	public CircularArrayList() {
@@ -16,142 +23,81 @@ public class CircularArrayList<E> extends List<E> {
 
 	// O(1)
 	@SuppressWarnings("unchecked")
-	public CircularArrayList(int size) {
-		array = (E[]) new Object[size];
+	public CircularArrayList(int capacity) {
+		array = (E[]) new Object[capacity];
 	}
 
-	private int length = array.length;
-
+	// O(1)
+	@SuppressWarnings("unchecked")
 	@Override
-	public void add(int index, E element) {
-		if (index > size || index < 0)
-			throw new ArrayIndexOutOfBoundsException(index);
-		if (size > length) {
-			for (int i = index + length; i > index + 1; i--) {
-				array[(i - 1) % length] = array[(i - 2) % length];
-			}
-		} else {
-			for (int i = size; i > index; i--) {
-				array[i] = array[i - 1];
-			}
+	public void clear() {
+		size = 0;
+		array = (E[]) new Object[INITIAL_CAPACITY];
+		head = tail = 0;
+	}
+
+	public void addLast(E element) {
+		if (isFull()) {
+			throw new RuntimeException("Array is full");
 		}
-		array[index] = element;
+			
+		array[tail] = element;
+		tail = (tail + 1) % array.length;
+		size++;
+		
+	}
+	
+	public void addFirst(E element) {
+		if (isFull()) {
+			throw new RuntimeException("Array is full");
+		}
+		
+		head = (head - 1 + array.length) % array.length;	
+		array[head] = element;
+		
 		size++;
 	}
+	
 
-	@Override
-	public void addLast(E element) {
-		add(size, element);
+	public boolean isFull() {
+		return size == array.length;
 	}
 
-	@Override
-	public void addFirst(E element) {
-		add(0, element);
-	}
-
-	@Override
-	public int indexOf(E element) {
-		if (size > length) {
-			for (int i = 0; i < length; i++) {
-				if (element.equals(array[i])) {
-					return i;
-				}
-			}
-		} else {
-			for (int i = 0; i < size; i++) {
-				if (element.equals(array[i])) {
-					return i;
-				}
-			}
-		}
-		return -1;
-	}
-
-	@Override
-	public int lastIndexOf(E element) {
-		if (size > length) {
-			for (int i = length - 1; i > -1; i--) {
-				if (element.equals(array[i])) {
-					return i;
-				}
-			}
-		} else {
-			for (int i = size - 1; i > -1; i--) {
-				if (element.equals(array[i])) {
-					return i;
-				}
-			}
-		}
-		return -1;
-	}
-
-	@Override
-	public E get(int index) {
-		if (index >= size || index < 0)
-			throw new ArrayIndexOutOfBoundsException(index);
-
-		return array[index];
-	}
-
-	@Override
-	public E removeIndex(int index) {
-		if (index >= size || index < 0)
-			throw new ArrayIndexOutOfBoundsException(index);
-
-		E data = array[index];
-		
-		if(size > length) {
-			for(int i = index; i < size % length)
-		}
-
-		for (int i = index; i < size - 1; i++) {
-			array[i] = array[i + 1];
-		}
-
-		size--;
-
-		shrinkIfNecessery();
-
-		return data;
-	}
-
-	@Override
-	public E removeLast() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public E removeFirst() {
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty())
+			throw new NoSuchElementException();
+		
+		E e = array[head];
+
+		head = (head + 1) % array.length;
+		size--;
+		return e;
 	}
 
-	@Override
-	public boolean removeElement(E element) {
-		// TODO Auto-generated method stub
-		return false;
+	public E removeLast() {
+		if (isEmpty())
+			throw new NoSuchElementException();
+		
+		tail = (tail - 1 + array.length) % array.length;
+		
+		E e = array[tail];
+		
+		size--;
+		return e;
+		
 	}
 
-	@Override
-	public E set(int index, E element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean contains(E element) {
-		// TODO Auto-generated method stub
+		int index = head;
+		for (int i = 0; i < size; i++) {
+			if (array[index].equals(element))
+				return true;
+
+			index = (index + 1) % array.length;
+		}
 		return false;
 	}
 
-	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
 		return null;
