@@ -1,6 +1,6 @@
 package collection.set;
 
-public class HashSet<E> extends Set<E>{
+public class HashSet<E> extends Set<E> {
 
 	// O(1)
 	@Override

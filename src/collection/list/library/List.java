@@ -2,29 +2,29 @@ package collection.list.library;
 
 import collection.AbstractCollection;
 
-public abstract class List<T> extends AbstractCollection<T> implements Iterable<T> {
+public abstract class List<E> extends AbstractCollection<E> implements Iterable<E> {
 
-	public abstract void add(int index, T element);
+	public abstract void add(int index, E element);
 
-	public abstract void addLast(T element);
+	public abstract void addLast(E element);
 
-	public abstract void addFirst(T element);
+	public abstract void addFirst(E element);
 
-	public abstract int indexOf(T element);
+	public abstract int indexOf(E element);
 
-	public abstract int lastIndexOf(T element);
+	public abstract int lastIndexOf(E element);
 
-	public abstract T get(int index);
+	public abstract E get(int index);
 
-	public abstract T removeIndex(int index);
+	public abstract E removeIndex(int index);
 
-	public abstract T removeLast();
+	public abstract E removeLast();
 
-	public abstract T removeFirst();
+	public abstract E removeFirst();
 
-	public abstract boolean removeElement(T element);
+	public abstract boolean removeElement(E element);
 
-	public abstract T set(int index, T element);
+	public abstract E set(int index, E element);
 
 	public abstract String toString();
 

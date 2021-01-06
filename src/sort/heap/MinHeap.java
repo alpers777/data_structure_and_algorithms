@@ -4,7 +4,7 @@ import collection.list.library.ArrayList;
 
 public class MinHeap<E extends Comparable<E>> {
 
-	private ArrayList<E> list = new ArrayList<E>();
+	private ArrayList<E> list = new ArrayList<>();
 
 	public void add(E element) {
 		list.addLast(element);
@@ -24,31 +24,30 @@ public class MinHeap<E extends Comparable<E>> {
 	}
 
 	public E remove() {
-		if (list.size() == 0)
+		if (list.size() == 0) {
 			return null;
+		}
 
 		E removedElement = list.get(0);
-
 		list.set(0, list.get(list.size() - 1));
-
 		list.removeLast();
 
 		int currentIndex = 0;
 
 		while (true) {
-			int leftIndex = 2 * currentIndex + 1;
-			int rigthIndex = 2 * currentIndex + 2;
-			
-			if (leftIndex >= list.size())
-				break;
+			int leftIndex = currentIndex * 2 + 1;
+			int rightIndex = currentIndex * 2 + 2;
 
-			int maxIndex = leftIndex;
-			if (rigthIndex < list.size()) {
-				if (list.get(rigthIndex).compareTo(list.get(maxIndex)) < 0) {
-					maxIndex = rigthIndex;
-				}
+			if (leftIndex >= list.size()) {
+				break;
 			}
 
+			int maxIndex = leftIndex;
+			if (rightIndex < list.size()) {
+				if (list.get(rightIndex).compareTo(list.get(maxIndex)) < 0) {
+					maxIndex = rightIndex;
+				}
+			}
 			if (list.get(maxIndex).compareTo(list.get(currentIndex)) < 0) {
 				E e = list.get(currentIndex);
 				list.set(currentIndex, list.get(maxIndex));
@@ -56,10 +55,8 @@ public class MinHeap<E extends Comparable<E>> {
 			} else {
 				break;
 			}
-
 			currentIndex = maxIndex;
 		}
-
 		return removedElement;
 	}
 }

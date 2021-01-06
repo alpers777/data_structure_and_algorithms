@@ -16,6 +16,7 @@ public class TreeSet<E extends Comparable<E>> extends Set<E> implements Iterable
 	@Override
 	public boolean add(E element) {
 		return avl.insert(element);
+
 	}
 
 	// O(log n)
@@ -29,6 +30,7 @@ public class TreeSet<E extends Comparable<E>> extends Set<E> implements Iterable
 	public boolean contains(E element) {
 		return avl.search(element);
 	}
+
 	@Override
 	public Iterator<E> iterator() {
 		return avl.iterator();
