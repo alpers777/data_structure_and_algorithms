@@ -1,26 +1,31 @@
 package collection.set;
 
+import hash.HashSeperatingChanging;
+
 public class HashSet<E> extends Set<E> {
+	
+	private HashSeperatingChanging<E> hashTable = new HashSeperatingChanging<>();
 
 	// O(1)
 	@Override
 	public boolean add(E element) {
-		// TODO Auto-generated method stub
-		return false;
+		if (hashTable.contains(element))
+			return false;
+		
+		hashTable.add(element);
+		return true;
 	}
 
 	// O(1)
 	@Override
 	public boolean remove(E element) {
-		// TODO Auto-generated method stub
-		return false;
+		return hashTable.remove(element);
 	}
 
 	// O(1)
 	@Override
 	public boolean contains(E element) {
-		// TODO Auto-generated method stub
-		return false;
+		return hashTable.contains(element);
 	}
 
 }

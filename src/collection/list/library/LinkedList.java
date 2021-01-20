@@ -62,7 +62,7 @@ public class LinkedList<E> extends List<E> {
 	public boolean contains(E element) {
 		Node current = head;
 		while (current != null) {
-			if (current.data == element) {
+			if (current.data.equals(element)) {
 				return true;
 			}
 			current = current.next;
