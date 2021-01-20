@@ -8,6 +8,7 @@ public class LinkedList<E> extends List<E> {
 	private Node head;
 
 	private Node tail;
+	
 
 	// O(1)
 	public void clear() {
