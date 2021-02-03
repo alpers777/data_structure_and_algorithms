@@ -7,30 +7,28 @@ import collection.set.Set;
 import collection.set.TreeSet;
 
 public class TreeMap<K extends Comparable<K>, V> extends Map<K, V> implements Iterable<K> {
-	
+
 	private Set<Entry<K, V>> set;
-	
+
 	public TreeMap() {
 		set = new TreeSet();
 	}
-
 
 	@Override
 	public void put(K key, V value) {
 		set.add(new ComparableEntry<K, V>(key, value));
 	}
-	
+
 	@Override
 	public boolean containsKey(K key) {
 		return set.contains(new ComparableEntry<K, V>(key, null));
 	}
-	
+
 	@Override
 	public V get(K key) {
-		
+
 		return null;
 	}
-
 
 	@Override
 	public boolean containsValue(V value) {
@@ -39,24 +37,16 @@ public class TreeMap<K extends Comparable<K>, V> extends Map<K, V> implements It
 	}
 
 	@Override
-	public Set<Entry<K, V>> entrySet() {
-		return set;
-	}
-
-	
-	@Override
 	public Set<K> keySet() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public V remove(K Key) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 
 	@Override
 	public List<V> values() {
@@ -70,8 +60,8 @@ public class TreeMap<K extends Comparable<K>, V> extends Map<K, V> implements It
 		return null;
 	}
 
-	
-	static class ComparableEntry<K extends Comparable<K>, V> extends Entry<K, V> implements Comparable<ComparableEntry<K, V>> {
+	static class ComparableEntry<K extends Comparable<K>, V> extends Entry<K, V>
+			implements Comparable<ComparableEntry<K, V>> {
 
 		public ComparableEntry(K key, V value) {
 			super(key, value);
@@ -86,21 +76,21 @@ public class TreeMap<K extends Comparable<K>, V> extends Map<K, V> implements It
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
-			
+
 			if (obj == null)
 				return false;
-			
+
 			if (getClass() != obj.getClass())
 				return false;
-			
+
 			ComparableEntry other = (ComparableEntry) obj;
-			if (key == null) 
+			if (key == null)
 				if (other.key != null)
 					return false;
-			 
+
 			if (!key.equals(other.key))
 				return false;
-			
+
 			return true;
 		}
 

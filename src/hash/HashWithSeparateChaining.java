@@ -2,18 +2,18 @@ package hash;
 
 import collection.list.library.LinkedList;
 
-public class HashSeperatingChanging<E> {
+public class HashWithSeparateChaining<E> {
 	private static final int DEFAULT_CAPACITY = 16;
 
 	private LinkedList<E>[] hashTable;
 	private int size = 0;
 	private double loadFactor = 0.75;
 
-	public HashSeperatingChanging() {
+	public HashWithSeparateChaining() {
 		this(DEFAULT_CAPACITY);
 	}
 
-	public HashSeperatingChanging(int capacity) {
+	public HashWithSeparateChaining(int capacity) {
 		clear(capacity);
 	}
 
@@ -34,6 +34,7 @@ public class HashSeperatingChanging<E> {
 		if (hashTable[hash] == null) {
 			return false;
 		}
+		size--;
 		return hashTable[hash].removeElement(element);
 	}
 
@@ -66,7 +67,6 @@ public class HashSeperatingChanging<E> {
 			LinkedList<E>[] oldTable = hashTable;
 			hashTable = new LinkedList[hashTable.length * 2];
 			size = 0;
-
 			for (LinkedList<E> list : oldTable) {
 				if (list != null) {
 					for (E e : list) {

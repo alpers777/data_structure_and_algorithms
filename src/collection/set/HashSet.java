@@ -1,10 +1,10 @@
 package collection.set;
 
-import hash.HashSeperatingChanging;
+import hash.HashWithSeparateChaining;
 
 public class HashSet<E> extends Set<E> {
 	
-	private HashSeperatingChanging<E> hashTable = new HashSeperatingChanging<>();
+	private HashWithSeparateChaining<E> hashTable = new HashWithSeparateChaining<>();
 
 	// O(1)
 	@Override

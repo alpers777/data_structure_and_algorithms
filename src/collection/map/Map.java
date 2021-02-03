@@ -25,7 +25,7 @@ public abstract class Map<K, V>  {
 
 	public abstract void put(K key, V value);
 
-	public abstract V remove(K Key);
+	public abstract V remove(K key);
 
 	public abstract boolean containsKey(K key);
 
@@ -37,6 +37,5 @@ public abstract class Map<K, V>  {
 	
 	public abstract List<V> values();
 	
-	public abstract Set<Entry<K,V>> entrySet();
 	
 }

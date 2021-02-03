@@ -178,6 +178,10 @@ public class ArrayList<E> extends List<E> {
 
 		return sb.toString();
 	}
+	
+	public int getLength() {
+		return array.length;
+	}
 
 	@Override
 	public Iterator<E> iterator() {
