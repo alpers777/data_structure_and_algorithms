@@ -1,11 +1,12 @@
 package hash;
 
-import collection.list.library.ArrayList;
-
 public class HashWithLinearProbing<E> {
 	private static final int DEFAULT_CAPACITY = 16;
+	
+	// Dummy value to associate with an Object in the backing Map
+    private static final Object PRESENT = new Object();
 
-	private ArrayList<E> hashTable;
+	private E[] hashTable;
 	private int size = 0;
 	private double loadFactor = 0.75;
 
@@ -21,46 +22,49 @@ public class HashWithLinearProbing<E> {
 		rehashIfNecessary();
 
 		int hash = getHash(element);
-		while (hashTable.get(hash) != null) {
-			hash++;
-			if (hash > size - 1) {
-				hash = 0;
-			}
+		while (hashTable[hash] != null && !(hashTable[hash] instanceof Object)) {
+			hash = (hash + 1) % size;
 		}
-		hashTable.set(hash, element);
-		size++;
+		
+		if (hashTable[hash] == null)
+			size++;
+		
+		hashTable[hash] = element;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean remove(E element) {
-		if (hashTable.contains(element)) {
-			return hashTable.removeElement(element);
-		}
+		int index = findIndex(element);
+		
+		if (index == -1)
+			return false;
+		
+		hashTable[index] = (E) PRESENT;
+		
 		return false;
 	}
 
 	public boolean contains(E element) {
-		int hash = getHash(element);
-
-		if (hashTable.get(hash) == null) {
-			return false;
-		}
-		int acc = 0;
-		while (hashTable.get(hash) != element && acc > (hashTable.getLength() / loadFactor)) {
-			hash++;
-			acc++;
-			if (hash > size - 1) {
-				hash = 0;
-			}
-		}
-		if (hashTable.get(hash) == element) {
-			return true;
-		}
-		return false;
+		return findIndex(element) != -1;
 	}
 
+	private int findIndex(E element) {
+		int index = getHash(element);
+
+		while (!(hashTable[index] == null || hashTable[index].equals(element))) {
+			index = (index + 1) % size;
+		}
+
+		if (hashTable[index] == null) {
+			return -1;
+		}
+		return index;
+	}
+
+	@SuppressWarnings("unchecked")
 	public void clear(int capacity) {
 		size = 0;
-		hashTable = new ArrayList<E>(capacity);
+		hashTable = (E[]) new Object[capacity];
 	}
 
 	public int getSize() {
@@ -68,16 +72,17 @@ public class HashWithLinearProbing<E> {
 	}
 
 	private int getHash(E element) {
-		return element.hashCode() % hashTable.getLength();
+		return element.hashCode() % hashTable.length;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void rehashIfNecessary() {
-		if ((double) size / hashTable.getLength() >= loadFactor) {
-			ArrayList<E> oldTable = hashTable;
-			hashTable = new ArrayList<E>(hashTable.getLength() * 2);
+		if ((double) size / hashTable.length >= loadFactor) {
+			E[] oldTable = hashTable;
+			hashTable = (E[]) new Object[hashTable.length * 2];
 			size = 0;
 			for (E e : oldTable) {
-				if (e != null) {
+				if (e != null && !(e.getClass() == PRESENT.getClass())) {
 					add(e);
 				}
 			}
