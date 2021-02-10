@@ -1,12 +1,18 @@
 package graph;
 
+import java.util.Arrays;
+
 public class TestGraph {
 	public static void main(String[] args) {
-		String[] vertices = { "Seattle", "San Francisco", "Los Angeles", "Denver", "Kansas City", "Chicago", "Boston",
-				"New York", "Atlanta", "Miami", "Dallas", "Houston" };
+		String[] vertices = { "Seattle", "San Francisco", 
+				"Los Angeles", "Denver", 
+				"Kansas City", "Chicago", 
+				"Boston", "New York", 
+				"Atlanta", "Miami", 
+				"Dallas", "Houston" };
 
 		// Edge array for graph in Figure 28.1
-		int[][] edges = { { 0, 1 }, { 0, 3 }, { 0, 5 }, { 1, 0 }, { 1, 2 }, { 1, 3 }, { 2, 1 }, { 2, 3 }, { 2, 4 },
+		int[][] edges = {  { 0, 1 }, { 0, 3 }, { 0, 5 }, { 1, 0 }, { 1, 2 }, { 1, 3 }, { 2, 1 }, { 2, 3 }, { 2, 4 },
 				{ 2, 10 }, { 3, 0 }, { 3, 1 }, { 3, 2 }, { 3, 4 }, { 3, 5 }, { 4, 2 }, { 4, 3 }, { 4, 5 }, { 4, 7 },
 				{ 4, 8 }, { 4, 10 }, { 5, 0 }, { 5, 3 }, { 5, 4 }, { 5, 6 }, { 5, 7 }, { 6, 5 }, { 6, 7 }, { 7, 4 },
 				{ 7, 5 }, { 7, 6 }, { 7, 8 }, { 8, 4 }, { 8, 7 }, { 8, 9 }, { 8, 10 }, { 8, 11 }, { 9, 8 }, { 9, 11 },
@@ -18,6 +24,12 @@ public class TestGraph {
 		System.out.println("The index for Miami is " + graph1.getIndex("Miami"));
 		System.out.println("The edges for graph1:");
 		graph1.printEdges();
+		
+		int[] path = ((UnweightedGraph) graph1).myDfs(0);
+		System.out.println(Arrays.toString(path));
+		
+		path = ((UnweightedGraph) graph1).myBfs(0);
+		System.out.println(Arrays.toString(path));
 
 		// List of Edge objects for graph in Figure 30.3a
 		String[] names = { "Peter", "Jane", "Mark", "Cindy", "Wendy" };

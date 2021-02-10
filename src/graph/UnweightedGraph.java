@@ -1,6 +1,8 @@
 package graph;
 
-import java.util.*;
+import java.util.List;
+
+import collection.list.library.LinkedList;
 
 public class UnweightedGraph<V> extends AbstractGraph<V> {
 	/** Construct an empty graph */
@@ -26,4 +28,55 @@ public class UnweightedGraph<V> extends AbstractGraph<V> {
 	public UnweightedGraph(int[][] edges, int numberOfVertices) {
 		super(edges, numberOfVertices);
 	}
+	
+	public int[] myBfs(int v) {
+		int[] parents = new int[getSize()];
+		parents[v] = v;
+		
+		boolean[] visited = new boolean[getSize()];
+		visited[v] = true;
+		
+		LinkedList<Integer> queue = new LinkedList<>();
+		queue.addLast(v);
+		
+		while(!queue.isEmpty()) {
+			int root = queue.removeFirst();
+			
+			for(int neighbor : getNeighbors(root)) {
+				if(!visited[neighbor]) {
+					parents[neighbor] = root;
+					visited[neighbor] = true;
+					
+					queue.addLast(neighbor);
+				}
+			}
+		}
+		
+		
+		return parents;
+	}
+
+	public int[] myDfs(int v) {
+		int[] parents = new int[getSize()];
+		parents[v] = v;
+		
+		boolean[] visited = new boolean[getSize()];
+		visited[v] = true;
+		
+		myDfs(v, parents, visited);
+		
+		return parents;
+	}
+	
+	private void myDfs(int root, int[] parents, boolean[] visited) {
+		
+		for(int neighbor : getNeighbors(root)) {
+			if(!visited[neighbor]) {
+				parents[neighbor] = root;
+				visited[neighbor] = true;
+				myDfs(neighbor, parents, visited);
+			}
+		}
+	}
+	
 }
