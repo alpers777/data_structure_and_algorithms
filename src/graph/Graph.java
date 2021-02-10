@@ -36,4 +36,8 @@ public interface Graph<V> {
 
 	/** Obtain a breadth-first search tree */
 	public AbstractGraph<V>.Tree bfs(int v);
+	
+	public int[] myBfs(int v);
+	
+	public int[] myDfs(int v);
 }

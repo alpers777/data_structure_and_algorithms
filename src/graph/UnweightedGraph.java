@@ -1,5 +1,6 @@
 package graph;
 
+import java.util.Arrays;
 import java.util.List;
 
 import collection.list.library.LinkedList;
@@ -58,6 +59,7 @@ public class UnweightedGraph<V> extends AbstractGraph<V> {
 
 	public int[] myDfs(int v) {
 		int[] parents = new int[getSize()];
+		Arrays.fill(parents, -1);
 		parents[v] = v;
 		
 		boolean[] visited = new boolean[getSize()];
