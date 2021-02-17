@@ -57,7 +57,8 @@ public class ConnectedCircles extends Application {
 			// Create a graph with circles as vertices
 			Graph<Node> graph = new UnweightedGraph<>((java.util.List<Node>) getChildren(), edges);
 			// AbstractGraph<Node>.Tree tree = graph.dfs(0); // a DFS tree
-			// boolean isAllCirclesConnected = getChildren().size() == tree.getNumberOfVerticesFound();
+			// boolean isAllCirclesConnected = getChildren().size() ==
+			// tree.getNumberOfVerticesFound();
 			int[] path = graph.myDfs(0);
 			boolean isAllCirclesConnected = true;
 			for (int i : path) {

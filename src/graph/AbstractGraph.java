@@ -2,6 +2,8 @@ package graph;
 
 import java.util.*;
 
+import collection.list.library.LinkedList;
+
 public abstract class AbstractGraph<V> implements Graph<V> {
 	protected List<V> vertices = new ArrayList<>(); // Store vertices
 	protected List<List<Edge>> neighbors = new ArrayList<>(); // Adjacency lists
@@ -280,6 +282,59 @@ public abstract class AbstractGraph<V> implements Graph<V> {
 				}
 			}
 			System.out.println();
+		}
+	}
+	
+
+	
+	public int[] myBfs(int v) {
+		int[] parents = new int[getSize()];
+		parents[v] = v;
+		
+		boolean[] visited = new boolean[getSize()];
+		visited[v] = true;
+		
+		LinkedList<Integer> queue = new LinkedList<>();
+		queue.addLast(v);
+		
+		while(!queue.isEmpty()) {
+			int root = queue.removeFirst();
+			
+			for(int neighbor : getNeighbors(root)) {
+				if(!visited[neighbor]) {
+					parents[neighbor] = root;
+					visited[neighbor] = true;
+					
+					queue.addLast(neighbor);
+				}
+			}
+		}
+		
+		
+		return parents;
+	}
+
+	public int[] myDfs(int v) {
+		int[] parents = new int[getSize()];
+		Arrays.fill(parents, -1);
+		parents[v] = v;
+		
+		boolean[] visited = new boolean[getSize()];
+		visited[v] = true;
+		
+		myDfs(v, parents, visited);
+		
+		return parents;
+	}
+	
+	private void myDfs(int root, int[] parents, boolean[] visited) {
+		
+		for(int neighbor : getNeighbors(root)) {
+			if(!visited[neighbor]) {
+				parents[neighbor] = root;
+				visited[neighbor] = true;
+				myDfs(neighbor, parents, visited);
+			}
 		}
 	}
 }

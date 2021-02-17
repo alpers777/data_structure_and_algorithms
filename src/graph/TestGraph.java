@@ -25,10 +25,10 @@ public class TestGraph {
 		System.out.println("The edges for graph1:");
 		graph1.printEdges();
 		
-		int[] path = ((UnweightedGraph) graph1).myDfs(0);
+		int[] path = graph1.myDfs(0);
 		System.out.println(Arrays.toString(path));
 		
-		path = ((UnweightedGraph) graph1).myBfs(0);
+		path = graph1.myBfs(0);
 		System.out.println(Arrays.toString(path));
 
 		// List of Edge objects for graph in Figure 30.3a
